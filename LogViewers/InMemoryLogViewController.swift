@@ -45,7 +45,15 @@ public final class InMemoryLogViewController: UIViewController {
 
         super.init(nibName: nil, bundle: nil)
 
+        title = "Log"
         view.backgroundColor = UIColor(hexString: "#F0F2F5")
+
+        let refreshItem = UIBarButtonItem(
+            barButtonSystemItem: .refresh,
+            target: self,
+            action: #selector(InMemoryLogViewController.refreshButtonDidTapped)
+        )
+        navigationItem.setRightBarButton(refreshItem, animated: false)
 
         tableView.delegate = self
         tableView.dataSource = self
@@ -63,9 +71,6 @@ public final class InMemoryLogViewController: UIViewController {
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-
-        let refreshItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(InMemoryLogViewController.refreshButtonDidTapped))
-        navigationItem.setRightBarButton(refreshItem, animated: false)
 
         view.addSubview(searchBar)
         searchBar.snp.makeConstraints { (make) in
