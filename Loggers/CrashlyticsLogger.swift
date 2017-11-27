@@ -18,7 +18,7 @@ public class CrashlyticsLogger: DDAbstractLogger {
 
     public override func log(message logMessage: DDLogMessage) {
         let message: String?
-        if let formatter = logFormatter {
+        if let formatter = value(forKey: "_logFormatter") as? DDLogFormatter {
             message = formatter.format(message: logMessage)
         } else {
             message = logMessage.message

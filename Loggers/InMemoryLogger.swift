@@ -24,7 +24,7 @@ public class InMemoryLogger: DDAbstractLogger {
     public private(set) var messageQueue: [MessageBundle] = []
 
     public override func log(message logMessage: DDLogMessage) {
-        if let logFormatter = self.logFormatter,
+        if let logFormatter = value(forKey: "_logFormatter") as? DDLogFormatter,
            let formattedMessage = logFormatter.format(message: logMessage) {
             messageQueue.append(MessageBundle(rawMessage: logMessage, formattedMessage: formattedMessage))
         } else {
