@@ -8,25 +8,26 @@
 
 import UIKit
 import SnapKit
+import CocoaLumberjack
 
 private let reuseIdentifier = "InMemoryLogTableCell"
 
 public final class InMemoryLogViewController: UIViewController {
     let logger: InMemoryLogger
 
-    var snapshot: [String] = [] {
+    var snapshot: [MessageBundle] = [] {
         didSet {
-            filteredSnapshot = snapshot.filter { filterKeyword == "" ? true : $0.lowercased().contains(filterKeyword.lowercased()) }
+            filteredSnapshot = snapshot.filter { filterKeyword == "" ? true : $0.formattedMessage.lowercased().contains(filterKeyword.lowercased()) }
         }
     }
 
     var filterKeyword: String = "" {
         didSet {
-            filteredSnapshot = snapshot.filter { filterKeyword == "" ? true : $0.lowercased().contains(filterKeyword.lowercased()) }
+            filteredSnapshot = snapshot.filter { filterKeyword == "" ? true : $0.formattedMessage.lowercased().contains(filterKeyword.lowercased()) }
         }
     }
 
-    var filteredSnapshot: [String] = [] {
+    var filteredSnapshot: [MessageBundle] = [] {
         didSet {
             tableView.reloadData()
             needsToScrollToBottom = true
@@ -119,11 +120,11 @@ extension InMemoryLogViewController: UITableViewDataSource {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: reuseIdentifier)
         cell.textLabel?.numberOfLines = 0
-        let logString = filteredSnapshot[indexPath.row]
-        cell.textLabel?.text = logString
+        let bundle = filteredSnapshot[indexPath.row]
+        cell.textLabel?.text = bundle.formattedMessage
         cell.textLabel?.font = UIFont(name: "Menlo-Bold", size: 13.0)
-        cell.textLabel?.textColor = color(for: logString)
-        cell.backgroundColor = S1Global.color(fromHexString: "#F0F2F5")
+        cell.textLabel?.textColor = color(for: bundle.rawMessage)
+        cell.backgroundColor = UIColor(hexString: "#F0F2F5")
         return cell
     }
 }
@@ -139,39 +140,20 @@ extension InMemoryLogViewController: UISearchBarDelegate {
 }
 
 extension InMemoryLogViewController {
-    func color(for string: String) -> UIColor {
-        if string.contains("|Verbose|") {
+    func color(for logMessage: DDLogMessage) -> UIColor {
+        switch logMessage.flag {
+        case .verbose:
             return UIColor(hexString: "#A7ADBB")
-        } else if string.contains("|Debug  |") {
+        case .debug:
             return UIColor(hexString: "#64727E")
-        } else if string.contains("|Info   |") {
+        case .info:
             return UIColor(hexString: "#76A4D3")
-        } else if string.contains("|Warning|") {
+        case .warning:
             return UIColor(hexString: "#D38E76")
-        } else if string.contains("|Error  |") {
+        case .error:
             return UIColor(hexString: "#C2636B")
+        default:
+            return UIColor(hexString: "#000000")
         }
-
-        return UIColor(hexString: "#000000")
-    }
-}
-
-extension UIColor {
-    fileprivate convenience init(hexString: String) {
-        var rgbValue: UInt64 = 0
-        let scanner = Scanner(string: hexString)
-        guard let firstCharacter = hexString.first else {
-            fatalError()
-        }
-        if firstCharacter == "#" {
-            scanner.scanLocation = 1
-        }
-
-        scanner.scanHexInt64(&rgbValue)
-        let r = CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0
-        let g = CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0
-        let b = CGFloat((rgbValue & 0x0000FF)) / 255.0
-
-        self.init(red: r, green: g, blue: b, alpha: 1.0)
     }
 }

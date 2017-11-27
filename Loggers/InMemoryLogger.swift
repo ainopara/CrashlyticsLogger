@@ -6,26 +6,33 @@
 //  Copyright © 2017 Renaissance. All rights reserved.
 //
 
-import UIKit
 import CocoaLumberjack
+
+public struct MessageBundle {
+    let rawMessage: DDLogMessage
+    let formattedMessage: String
+}
 
 public class InMemoryLogger: DDAbstractLogger {
     @objc public static let shared = InMemoryLogger()
-    public var maxMessageEntity = 1000
-    public override var loggerName: String { return "com.ainopara.inMemoryLogger" }
 
-    public var messageQueue: [String] { return _messageQueue }
-    private var _messageQueue: [String] = []
+    public override var loggerName: String {
+        return "com.ainopara.inMemoryLogger"
+    }
+
+    public var maxMessageEntity = 1000
+    public private(set) var messageQueue: [MessageBundle] = []
 
     public override func log(message logMessage: DDLogMessage) {
-        if let logFormatter = self.value(forKey: "_logFormatter") as? DDLogFormatter {
-            _messageQueue.append(logFormatter.format(message: logMessage)!)
+        if let logFormatter = self.logFormatter,
+           let formattedMessage = logFormatter.format(message: logMessage) {
+            messageQueue.append(MessageBundle(rawMessage: logMessage, formattedMessage: formattedMessage))
         } else {
-            _messageQueue.append(logMessage.message)
+            messageQueue.append(MessageBundle(rawMessage: logMessage, formattedMessage: logMessage.message))
         }
 
-        while _messageQueue.count > maxMessageEntity {
-            _messageQueue.removeFirst()
+        while messageQueue.count > maxMessageEntity {
+            messageQueue.removeFirst()
         }
     }
 }
