@@ -15,21 +15,14 @@ private let reuseIdentifier = "InMemoryLogTableCell"
 public final class InMemoryLogViewController: UIViewController {
     let logger: InMemoryLogger
 
-    var snapshot: [MessageBundle] = [] {
-        didSet {
-            filteredSnapshot = snapshot.filter { filterKeyword == "" ? true : $0.formattedMessage.lowercased().contains(filterKeyword.lowercased()) }
-        }
-    }
+    var snapshot: [MessageBundle] = [] { didSet { computeFilteredSnapshot() } }
 
-    var filterKeyword: String = "" {
-        didSet {
-            filteredSnapshot = snapshot.filter { filterKeyword == "" ? true : $0.formattedMessage.lowercased().contains(filterKeyword.lowercased()) }
-        }
-    }
+    var filterKeyword: String = "" { didSet { computeFilteredSnapshot() } }
 
     var filteredSnapshot: [MessageBundle] = [] {
         didSet {
             tableView.reloadData()
+            searchBar.placeholder = filteredSnapshot.count > 1 ? "\(filteredSnapshot.count) Records" : "\(filteredSnapshot.count) Record"
             needsToScrollToBottom = true
             view.setNeedsLayout()
         }
@@ -39,6 +32,16 @@ public final class InMemoryLogViewController: UIViewController {
     let searchBar = UISearchBar(frame: CGRect(x: 0.0, y: 0.0, width: 0.0, height: 42.0))
 
     private var needsToScrollToBottom = true
+
+    func computeFilteredSnapshot() {
+        if filterKeyword == "" {
+            filteredSnapshot = snapshot
+        } else {
+            filteredSnapshot = snapshot.filter { $0.formattedMessage.lowercased().contains(filterKeyword.lowercased()) }
+        }
+    }
+
+    // MARK: - Initializer
 
     @objc public init(inMemoryLogger: InMemoryLogger = InMemoryLogger.shared) {
         self.logger = inMemoryLogger
@@ -63,6 +66,7 @@ public final class InMemoryLogViewController: UIViewController {
 
         searchBar.delegate = self
         searchBar.searchBarStyle = .minimal
+        navigationItem.titleView = searchBar
     }
 
     public required init?(coder aDecoder: NSCoder) {
@@ -72,18 +76,9 @@ public final class InMemoryLogViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.addSubview(searchBar)
-        searchBar.snp.makeConstraints { (make) in
-            make.top.equalTo(topLayoutGuide.snp.bottom)
-            make.leading.trailing.equalTo(view)
-            make.height.equalTo(42.0)
-        }
-
         view.addSubview(tableView)
         tableView.snp.makeConstraints { (make) in
-            make.top.equalTo(searchBar.snp.bottom)
-            make.leading.trailing.equalTo(view)
-            make.bottom.equalTo(bottomLayoutGuide.snp.top)
+            make.edges.equalTo(view)
         }
 
         snapshot = logger.messageQueue
@@ -99,19 +94,25 @@ public final class InMemoryLogViewController: UIViewController {
         }
     }
 
+    // MARK: Actions
+
     @objc public func refreshButtonDidTapped() {
         snapshot = logger.messageQueue
     }
 }
 
+// MARK: - UITableViewDelegate
+
 extension InMemoryLogViewController: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if searchBar.canResignFirstResponder {
+        if searchBar.isFirstResponder {
             searchBar.resignFirstResponder()
         }
     }
 }
+
+// MARK: UITableViewDataSource
 
 extension InMemoryLogViewController: UITableViewDataSource {
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -134,6 +135,8 @@ extension InMemoryLogViewController: UITableViewDataSource {
     }
 }
 
+// MARK: UISearchBarDelegate
+
 extension InMemoryLogViewController: UISearchBarDelegate {
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         filterKeyword = searchText
@@ -143,6 +146,8 @@ extension InMemoryLogViewController: UISearchBarDelegate {
         searchBar.resignFirstResponder()
     }
 }
+
+// MARK: -
 
 extension InMemoryLogViewController {
     func color(for logMessage: DDLogMessage) -> UIColor {
