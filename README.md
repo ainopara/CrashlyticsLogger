@@ -38,6 +38,7 @@ pod 'CocoaLumberjack/Formatters', :git => 'https://github.com/ainopara/Crashlyti
 
 ### Manual
 Add this repo as git submodule. Then manually add sources to your project.
+
 Note that `CrashlyticsLogger` require `Crashlytics` and `InMemoryLogViewController` require `SnapKit`. And all the loggers and formatters require `CocoaLumberjack`.
 
 ## Usage
