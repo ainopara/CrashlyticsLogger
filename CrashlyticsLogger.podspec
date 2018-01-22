@@ -16,22 +16,23 @@ Pod::Spec.new do |s|
   s.platform     = :ios, "9.0"
   s.source       = { :git => "https://github.com/ainopara/CrashlyticsLogger.git", :tag => "#{s.version}" }
 
-  s.source_files  = "Sources/Loggers/*.{h,m,swift}"
+  s.source_files  = "Sources/Loggers/*.{swift}"
+  s.static_framework = true
 
   s.subspec 'Loggers' do |ss|
-    ss.source_files = "Sources/Loggers/*.{h,m,swift}"
+    ss.source_files = "Sources/Loggers/*.{swift}"
     ss.dependency 'Crashlytics'
     ss.dependency "CocoaLumberjack"
   end
 
   s.subspec 'LogViewers' do |ss|
-    ss.source_files = "Sources/LogViewers/*.{h,m,swift}"
+    ss.source_files = "Sources/LogViewers/*.{swift}"
     ss.dependency 'CrashlyticsLogger/Loggers'
     ss.dependency 'SnapKit'
   end
 
   s.subspec 'Formatters' do |ss|
-    ss.source_files = "Sources/Formatters/*.{h,m,swift}"
+    ss.source_files = "Sources/Formatters/*.{swift}"
     ss.dependency "CocoaLumberjack"
   end
 end
