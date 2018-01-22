@@ -7,12 +7,15 @@ This is an extension for `CocoaLumberjack`. It has several components that can b
 ### Loggers
 
 `CrashlyticsLogger`: Send logs to crashlytics if crash or non-fatal event occured.
+
 `InMemoryLogger`: Save logs in memory and can be accessed inside application.
 
 ### Formatters
 
 `DateLogFormatter`: Inset timestamp at the beginning of every log message.
+
 `DispatchQueueLogFormatter`: Inset dispatch queue at the beginning of every log message.
+
 `ErrorLevelLogFormatter`: Inset error level of the message at the beginning of every log message.
 
 ### LogViewers
