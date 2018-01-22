@@ -8,9 +8,9 @@
 
 import CocoaLumberjack
 
-class ErrorLevelLogFormatter: NSObject, DDLogFormatter {
+public class ErrorLevelLogFormatter: NSObject, DDLogFormatter {
 
-    func format(message logMessage: DDLogMessage) -> String? {
+    public func format(message logMessage: DDLogMessage) -> String? {
         let errorLevel: String
 
         switch logMessage.flag {

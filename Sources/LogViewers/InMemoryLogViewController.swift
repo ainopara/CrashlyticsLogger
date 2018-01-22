@@ -46,7 +46,7 @@ public final class InMemoryLogViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
 
         title = "Log"
-        view.backgroundColor = UIColor(hexString: "#F0F2F5")
+        view.backgroundColor = UIColor(red: 0.941, green: 0.949, blue: 0.961, alpha: 1.0) // #F0F2F5
 
         let refreshItem = UIBarButtonItem(
             barButtonSystemItem: .refresh,
@@ -59,7 +59,7 @@ public final class InMemoryLogViewController: UIViewController {
         tableView.dataSource = self
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 44.0
-        tableView.backgroundColor = UIColor(hexString: "#F0F2F5")
+        tableView.backgroundColor = UIColor(red: 0.941, green: 0.949, blue: 0.961, alpha: 1.0) // #F0F2F5
 
         searchBar.delegate = self
         searchBar.searchBarStyle = .minimal
@@ -129,7 +129,7 @@ extension InMemoryLogViewController: UITableViewDataSource {
         cell.textLabel?.text = bundle.formattedMessage
         cell.textLabel?.font = UIFont(name: "Menlo-Bold", size: 13.0)
         cell.textLabel?.textColor = color(for: bundle.rawMessage)
-        cell.backgroundColor = UIColor(hexString: "#F0F2F5")
+        cell.backgroundColor = UIColor(red: 0.941, green: 0.949, blue: 0.961, alpha: 1.0) // #F0F2F5
         return cell
     }
 }
@@ -148,17 +148,17 @@ extension InMemoryLogViewController {
     func color(for logMessage: DDLogMessage) -> UIColor {
         switch logMessage.flag {
         case .verbose:
-            return UIColor(hexString: "#A7ADBB")
+            return UIColor(red: 0.655, green: 0.678, blue: 0.733, alpha: 1.0) // #A7ADBB
         case .debug:
-            return UIColor(hexString: "#64727E")
+            return UIColor(red: 0.392, green: 0.447, blue: 0.494, alpha: 1.0) // #64727E
         case .info:
-            return UIColor(hexString: "#76A4D3")
+            return UIColor(red: 0.463, green: 0.643, blue: 0.827, alpha: 1.0) // #76A4D3
         case .warning:
-            return UIColor(hexString: "#D38E76")
+            return UIColor(red: 0.827, green: 0.557, blue: 0.463, alpha: 1.0) // #D38E76
         case .error:
-            return UIColor(hexString: "#C2636B")
+            return UIColor(red: 0.761, green: 0.388, blue: 0.420, alpha: 1.0) // #C2636B
         default:
-            return UIColor(hexString: "#000000")
+            return UIColor.black
         }
     }
 }

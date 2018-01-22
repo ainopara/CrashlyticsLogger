@@ -10,6 +10,7 @@ import Crashlytics
 import CocoaLumberjack
 
 public class CrashlyticsLogger: DDAbstractLogger {
+
     @objc public static let shared = CrashlyticsLogger()
 
     public override var loggerName: String {

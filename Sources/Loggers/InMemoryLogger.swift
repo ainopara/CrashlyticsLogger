@@ -14,6 +14,7 @@ public struct MessageBundle {
 }
 
 public class InMemoryLogger: DDAbstractLogger {
+
     @objc public static let shared = InMemoryLogger()
 
     public override var loggerName: String {

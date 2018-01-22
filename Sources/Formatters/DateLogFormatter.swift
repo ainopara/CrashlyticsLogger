@@ -9,6 +9,7 @@
 import CocoaLumberjack
 
 public class DateLogFormatter: DDDispatchQueueLogFormatter {
+
     public override func format(message logMessage: DDLogMessage) -> String? {
         let timestamp = self.string(from: logMessage.timestamp) ?? "UnknownTimestamp"
         return "\(timestamp) \(logMessage.message)"
