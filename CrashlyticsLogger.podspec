@@ -18,6 +18,7 @@ Pod::Spec.new do |s|
 
   s.source_files  = "Sources/Loggers/*.{swift}"
   s.static_framework = true
+  s.swift_version = '4.0'
 
   s.subspec 'Loggers' do |ss|
     ss.source_files = "Sources/Loggers/*.{swift}"
