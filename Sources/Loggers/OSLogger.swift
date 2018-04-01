@@ -1,19 +1,39 @@
 import CocoaLumberjack
 import os
 
+public protocol OSLoggerIndexable {
+    var loggerIndex: String { get }
+}
+
+public protocol OSLoggerTag {
+    var rawCategory: OSLoggerIndexable & CustomStringConvertible { get }
+    var rawSubsystem: OSLoggerIndexable & CustomStringConvertible { get }
+}
+
+extension OSLoggerTag {
+    var index: String {
+        return rawSubsystem.loggerIndex + "-" + rawCategory.loggerIndex
+    }
+
+    @available(iOS 10.0, *)
+    var log: OSLog {
+        return OSLog(subsystem: rawSubsystem.description, category: rawCategory.description)
+    }
+}
+
 @available(iOS 10.0, *)
-public class OSLogger: DDAbstractLogger {
+open class OSLogger: DDAbstractLogger {
     @objc public static let shared = OSLogger()
 
-    public override var loggerName: String {
+    open override var loggerName: String {
         return "com.ainopara.osLogger"
     }
 
-    public var logs: [String: OSLog] = [:]
+    private(set) var logs: [String: OSLog] = [:]
 
-    public override func log(message logMessage: DDLogMessage) {
+    open override func log(message logMessage: DDLogMessage) {
         let message: String?
-        if let formatter = value(forKey: "_logFormatter") as? DDLogFormatter {
+        if let formatter = self.value(forKey: "_logFormatter") as? DDLogFormatter {
             message = formatter.format(message: logMessage)
         } else {
             message = logMessage.message
@@ -24,29 +44,38 @@ public class OSLogger: DDAbstractLogger {
             return
         }
 
-        let type: OSLogType
-        switch logMessage.flag {
-        case .verbose:
-            type = .debug
-        case .debug:
-            type = .default
-        case .info:
-            type = .info
-        case .warning:
-            type = .error
-        case .error:
-            type = .fault
-        default:
-            type = .default
-        }
-
-        let log: OSLog
-        if let tag = logMessage.tag as? String, let target = logs[tag] {
-            log = target
-        } else {
-            log = OSLog.default
-        }
+        let type = self.logLevel(of: logMessage.flag)
+        let log = self.logTarget(of: logMessage.tag)
 
         os_log("%{public}@", log: log, type: type, finalMessage)
+    }
+
+    open func logLevel(of flag: DDLogFlag) -> OSLogType {
+        switch flag {
+        case .verbose: return .debug
+        case .debug:   return .default
+        case .info:    return .info
+        case .warning: return .error
+        case .error:   return .fault
+        default:       return .default
+        }
+    }
+
+    open func logTarget(of rawTag: Any?) -> OSLog {
+        guard let loggerTag = rawTag as? OSLoggerTag else {
+            return OSLog.default
+        }
+
+        guard let target = logs[loggerTag.index] else {
+            return OSLog.default
+        }
+
+        return target
+    }
+
+    open func register(tags: [OSLoggerTag]) {
+        for tag in tags {
+            logs[tag.index] = tag.log
+        }
     }
 }
