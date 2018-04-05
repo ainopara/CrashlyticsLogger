@@ -1,6 +1,6 @@
 # CrashlyticsLogger
 
-This is an extension for `CocoaLumberjack`. It has several components that can be imported separately.
+This is an extension for `CocoaLumberjack`. It has several components which can be imported separately.
 
 ## Components
 
@@ -12,11 +12,11 @@ This is an extension for `CocoaLumberjack`. It has several components that can b
 
 ### Formatters
 
-`DateLogFormatter`: Inset timestamp at the beginning of every log message.
+`DateLogFormatter`: Insert timestamp at the beginning of every log message.
 
-`DispatchQueueLogFormatter`: Inset dispatch queue at the beginning of every log message.
+`DispatchQueueLogFormatter`: Insert dispatch queue at the beginning of every log message.
 
-`ErrorLevelLogFormatter`: Inset error level of the message at the beginning of every log message.
+`ErrorLevelLogFormatter`: Insert error level of the message at the beginning of every log message.
 
 ### LogViewers
 
@@ -28,12 +28,12 @@ This is an extension for `CocoaLumberjack`. It has several components that can b
 Thanks to CocoaPods 1.4.0 add support to `static_framework`, This library can be imported from CocoaPods.
 
 ```ruby
-pod 'CocoaLumberjack', :git => 'https://github.com/ainopara/CrashlyticsLogger.git', :tag => '0.1.0'
+pod 'CocoaLumberjack', :git => 'https://github.com/ainopara/CrashlyticsLogger.git', :tag => '0.2.0'
 ```
 You can also import subspecs you needed separately.
 
 ```ruby
-pod 'CocoaLumberjack/Formatters', :git => 'https://github.com/ainopara/CrashlyticsLogger.git', :tag => '0.1.0'
+pod 'CocoaLumberjack/Formatters', :git => 'https://github.com/ainopara/CrashlyticsLogger.git', :tag => '0.2.0'
 ```
 
 ### Manual
