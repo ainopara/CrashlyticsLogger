@@ -21,6 +21,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'Loggers' do |ss|
     ss.source_files = "Sources/Loggers/*.{swift}"
+    ss.pod_target_xcconfig = { 'OTHER_SWIFT_FLAGS' => '-F ${PODS_ROOT}/Crashlytics/iOS' }
     ss.dependency "Crashlytics"
     ss.dependency "CocoaLumberjack"
   end
