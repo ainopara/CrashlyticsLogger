@@ -28,12 +28,12 @@ This is an extension for `CocoaLumberjack`. It has several components which can 
 Thanks to CocoaPods 1.4.0 add support to `static_framework`, This library can be imported from CocoaPods.
 
 ```ruby
-pod 'CocoaLumberjack', :git => 'https://github.com/ainopara/CrashlyticsLogger.git', :tag => '0.2.0'
+pod 'CrashlyticsLogger', :git => 'https://github.com/ainopara/CrashlyticsLogger.git', :tag => '0.2.0'
 ```
 You can also import subspecs you needed separately.
 
 ```ruby
-pod 'CocoaLumberjack/Formatters', :git => 'https://github.com/ainopara/CrashlyticsLogger.git', :tag => '0.2.0'
+pod 'CrashlyticsLogger/Formatters', :git => 'https://github.com/ainopara/CrashlyticsLogger.git', :tag => '0.2.0'
 ```
 
 ### Manual
