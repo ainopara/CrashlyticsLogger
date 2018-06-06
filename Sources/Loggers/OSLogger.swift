@@ -1,26 +1,6 @@
 import CocoaLumberjack
 import os
 
-public protocol OSLoggerIndexable {
-    var loggerIndex: String { get }
-}
-
-public protocol OSLoggerTag {
-    var rawCategory: OSLoggerIndexable & CustomStringConvertible { get }
-    var rawSubsystem: OSLoggerIndexable & CustomStringConvertible { get }
-}
-
-extension OSLoggerTag {
-    var index: String {
-        return rawSubsystem.loggerIndex + "-" + rawCategory.loggerIndex
-    }
-
-    @available(iOS 10.0, *)
-    var log: OSLog {
-        return OSLog(subsystem: rawSubsystem.description, category: rawCategory.description)
-    }
-}
-
 @available(iOS 10.0, *)
 open class OSLogger: DDAbstractLogger {
     @objc public static let shared = OSLogger()
