@@ -16,29 +16,13 @@ Pod::Spec.new do |s|
   s.platform     = :ios, "9.0"
   s.source       = { :git => "https://github.com/ainopara/CrashlyticsLogger.git", :tag => "#{s.version}" }
 
+  s.source_files = "Sources/*.{swift}"
+
+  s.static_framework = true
   s.swift_version = "4.0"
+  s.pod_target_xcconfig = { 'OTHER_SWIFT_FLAGS' => '-F ${PODS_ROOT}/Crashlytics/iOS' }
 
-  s.subspec 'Core' do |ss|
-    ss.source_files = "Sources/Core/*.{swift}"
-  end
-
-  s.subspec 'Loggers' do |ss|
-    s.static_framework = true
-    ss.source_files = "Sources/Loggers/*.{swift}"
-    ss.pod_target_xcconfig = { 'OTHER_SWIFT_FLAGS' => '-F ${PODS_ROOT}/Crashlytics/iOS' }
-    ss.dependency "Crashlytics"
-    ss.dependency "CrashlyticsLogger/Core"
-    ss.dependency "CocoaLumberjack"
-  end
-
-  s.subspec 'Formatters' do |ss|
-    ss.source_files = "Sources/Formatters/*.{swift}"
-    ss.dependency "CocoaLumberjack"
-  end
-
-  s.subspec 'LogViewers' do |ss|
-    ss.source_files = "Sources/LogViewers/*.{swift}"
-    ss.dependency "CrashlyticsLogger/Loggers"
-    ss.dependency "SnapKit"
-  end
+  s.dependency "Crashlytics"
+  s.dependency "CocoaLumberjack"
+  s.dependency "CocoaLumberjack/Swift"
 end
