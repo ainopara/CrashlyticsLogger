@@ -1,17 +1,16 @@
 Pod::Spec.new do |s|
 
   s.name         = "CrashlyticsLogger"
-  s.version      = "0.3.0"
-  s.summary      = "A logger to fill logs to Crashlytics. Based on CocoaLumberjack."
+  s.version      = "0.3.1"
+  s.summary      = "A custom CocoaLumberjack logger to forward logs to Crashlytics."
 
   s.description  = <<-DESC
-                   A logger to fill logs to Crashlytics. Based on CocoaLumberjack.
-                   And another logger to keep logs in memory and a view controller to inspect them in place.
-                   Altogether with some useful log formatter.
+                   A custom CocoaLumberjack logger to forward logs to Crashlytics.
+                   This is a swift repo and has dependency of static lib in Crashlytics SDK.
                    DESC
 
   s.homepage     = "https://github.com/ainopara/CrashlyticsLogger"
-  s.license      = "BSD"
+  s.license      = { :type => "MIT", :file => "LICENSE" }
   s.author       = { "ainopara" => "ainopara@gmail.com" }
   s.platform     = :ios, "9.0"
   s.source       = { :git => "https://github.com/ainopara/CrashlyticsLogger.git", :tag => "#{s.version}" }
