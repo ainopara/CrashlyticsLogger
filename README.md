@@ -8,7 +8,7 @@ This is an extension for `CocoaLumberjack` to forward logs to `Crashltyics`.
 Thanks to CocoaPods 1.4.0 add support to `static_framework`, This library can be imported from CocoaPods.
 
 ```ruby
-pod 'CrashlyticsLogger', :git => 'https://github.com/ainopara/CrashlyticsLogger.git', :tag => '0.3.0'
+pod 'CrashlyticsLogger', '~> 0.3.1'
 ```
 
 ### Manual
@@ -36,4 +36,4 @@ DDLog.add(inMemoryLogger)
 ```
 
 ## License
-BSD
+MIT
