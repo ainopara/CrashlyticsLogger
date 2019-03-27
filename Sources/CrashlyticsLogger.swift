@@ -9,12 +9,16 @@
 import Crashlytics
 import CocoaLumberjack
 
+extension DDLoggerName {
+    static let crashlytics = DDLoggerName("com.ainopara.crashlyticsLogger")
+}
+
 public class CrashlyticsLogger: DDAbstractLogger {
 
     @objc public static let shared = CrashlyticsLogger()
 
-    public override var loggerName: String {
-        return "com.ainopara.crashlyticsLogger"
+    public override var loggerName: DDLoggerName {
+        return .crashlytics
     }
 
     public override func log(message logMessage: DDLogMessage) {

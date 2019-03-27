@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "CrashlyticsLogger"
-  s.version      = "0.3.1"
+  s.version      = "0.4.0"
   s.summary      = "A custom CocoaLumberjack logger to forward logs to Crashlytics."
 
   s.description  = <<-DESC
@@ -18,10 +18,10 @@ Pod::Spec.new do |s|
   s.source_files = "Sources/*.{swift}"
 
   s.static_framework = true
-  s.swift_version = "4.0"
+  s.swift_version = "5.0"
   s.pod_target_xcconfig = { 'OTHER_SWIFT_FLAGS' => '-F ${PODS_ROOT}/Crashlytics/iOS' }
 
   s.dependency "Crashlytics"
-  s.dependency "CocoaLumberjack"
+  s.dependency "CocoaLumberjack", '~> 3.5'
   s.dependency "CocoaLumberjack/Swift"
 end
